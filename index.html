@@ -1055,6 +1055,25 @@ input[type=range]::-moz-range-thumb{
 .ab:hover{border-color:var(--brand-line);color:var(--brand)}
 .ab:active{background:var(--brand);color:#fff;transform:scale(.96)}
 
+/* ---- Claw / Gripper (capit) — fitur dari uconnect ---- */
+.grip-row{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;margin-top:14px}
+.grip-viz{width:96px;min-height:64px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);display:grid;place-items:center;padding:8px 6px;flex-shrink:0}
+.grip-viz svg{width:100%;height:auto;display:block;overflow:visible}
+.claw{transition:transform .32s cubic-bezier(.3,1.25,.5,1)}
+.claw.l{transform:translateX(var(--d,-9px))}
+.claw.r{transform:translateX(calc(var(--d,-9px) * -1))}
+.grip-obj{fill:var(--ok);opacity:.25;transform:translateY(8px) scale(.7);transform-box:fill-box;transform-origin:center;transition:transform .32s cubic-bezier(.3,1.25,.5,1),opacity .3s}
+.grip-viz.held .grip-obj{opacity:1;transform:none}
+.gbtn{--gc:var(--brand);position:relative;flex:1;min-width:150px;height:64px;padding:0 16px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;user-select:none;touch-action:manipulation;font-family:inherit;font-weight:800;font-size:13px;letter-spacing:.06em;color:var(--txt);background:var(--surface-2);border:1px solid var(--line);transition:.14s var(--ease)}
+.gbtn.grab{--gc:var(--ok)}
+.gbtn.release{--gc:var(--warn)}
+.gbtn svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.gbtn kbd{position:absolute;top:6px;right:9px;font-family:var(--fm);font-size:10px;font-weight:700;line-height:1.3;padding:0 6px;border-radius:5px;background:var(--surface-3);color:var(--txt-3);border:1px solid var(--line)}
+.gbtn:hover{border-color:var(--gc);color:var(--gc);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.gbtn:active,.gbtn.active{transform:scale(.95);background:var(--gc);color:#fff;border-color:var(--gc);box-shadow:0 0 22px var(--gc)}
+.gbtn:active kbd,.gbtn.active kbd{background:rgba(255,255,255,.22);color:#fff;border-color:transparent}
+#hudGrip{color:var(--txt-2);font-weight:800}
+
 /* ============================================================
    CONSOLE / LOG
    ============================================================ */
@@ -2706,6 +2725,35 @@ html[data-skin="meme"] .metric b{-webkit-text-stroke:1.5px #000}
         </div>
       </div>
 
+      <!-- ---- Claw / Gripper (capit) — fitur dari uconnect ---- -->
+      <div class="card" style="margin-top:14px">
+        <div class="card-h">
+          <div class="ic g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V11q0-5 5-5"/><path d="M18 21V11q0-5-5-5"/><rect x="9.5" y="12" width="5" height="5" rx="1"/></svg></div>
+          <h3 data-i18n="claw_t">Capit (Gripper)</h3>
+          <span class="sub">GRIP: <b id="hudGrip">OPEN</b></span>
+        </div>
+        <div class="grip-row">
+          <div class="grip-viz" id="gripViz" aria-hidden="true">
+            <svg viewBox="0 0 100 58">
+              <rect x="14" y="3" width="72" height="7" rx="3.5" fill="var(--surface-3)" stroke="var(--line-strong)"/>
+              <rect x="42" y="5" width="16" height="9" rx="3" fill="var(--surface-3)" stroke="var(--line-strong)"/>
+              <g class="claw l"><path d="M31 43V14Q31 10 35 10H46V16H40V43Z" fill="var(--surface-3)" stroke="var(--brand)" stroke-width="1.5" stroke-linejoin="round"/><rect x="38.4" y="20" width="1.6" height="13" rx=".8" fill="var(--warn)"/></g>
+              <g class="claw r"><path d="M69 43V14Q69 10 65 10H54V16H60V43Z" fill="var(--surface-3)" stroke="var(--brand)" stroke-width="1.5" stroke-linejoin="round"/><rect x="60" y="20" width="1.6" height="13" rx=".8" fill="var(--warn)"/></g>
+              <rect class="grip-obj" x="44" y="36" width="12" height="12" rx="2.5"/>
+            </svg>
+          </div>
+          <button class="gbtn grab" id="gripGrab" type="button" title="Capit (Q)">
+            <svg viewBox="0 0 24 24"><path d="M6 21V11q0-5 5-5"/><path d="M18 21V11q0-5-5-5"/><rect x="9.5" y="12" width="5" height="5" rx="1"/></svg>
+            <span>CAPIT</span><kbd>Q</kbd>
+          </button>
+          <button class="gbtn release" id="gripRelease" type="button" title="Lepas (E)">
+            <svg viewBox="0 0 24 24"><path d="M9 21 4.5 11.5Q3 8 6.5 6.5"/><path d="M15 21l4.5-9.5Q21 8 17.5 6.5"/><rect x="9.5" y="12" width="5" height="5" rx="1"/></svg>
+            <span>LEPAS</span><kbd>E</kbd>
+          </button>
+        </div>
+        <p class="out-note" data-i18n="claw_note">Mengirim perintah <code>capit</code> / <code>lepas</code> untuk servo capit (default pin <b>P1</b>, sudut CAPIT_ANGLE 30° / LEPAS_ANGLE 110° — lihat contoh kode). Keyboard: <b>Q</b> = capit, <b>E</b> = lepas.</p>
+      </div>
+
       <!-- ---- Output (controls): lamp / fan / mode ---- -->
       <div class="card" style="margin-top:14px">
         <div class="card-h">
@@ -3097,6 +3145,9 @@ html[data-skin="meme"] .metric b{-webkit-text-stroke:1.5px #000}
       <div>
         <h4>MakeCode — Bluetooth UART</h4>
 <pre class="ai-code">bluetooth.startUartService()
+// servo capit (gripper) — sesuaikan sudut dengan capitmu
+let CAPIT_ANGLE = 30      // capit: gripper tertutup
+let LEPAS_ANGLE = 110     // lepas: gripper terbuka
 bluetooth.onUartDataReceived(delimiters(NewLine), function () {
     let cmd = bluetooth.uartReadUntil(delimiters(NewLine)).trim()
     if (cmd == "FORWARD") {
@@ -3109,6 +3160,12 @@ bluetooth.onUartDataReceived(delimiters(NewLine), function () {
         // TODO: belok kanan
     } else if (cmd == "STOP") {
         // TODO: berhenti
+    } else if (cmd == "capit") {
+        // capit: tutup gripper — servo P1 ke CAPIT_ANGLE
+        pins.servoWritePin(AnalogPin.P1, CAPIT_ANGLE)
+    } else if (cmd == "lepas") {
+        // lepas: buka gripper — servo P1 ke LEPAS_ANGLE
+        pins.servoWritePin(AnalogPin.P1, LEPAS_ANGLE)
     }
 })</pre>
         <div class="ai-cmd-fmt">
@@ -3428,7 +3485,7 @@ bluetooth.onUartDataReceived(delimiters(NewLine), function () {
           <span class="pill"><b>lamp</b>:on</span><span class="pill"><b>fan</b>:2</span>
           <span class="pill"><b>mode</b>:auto</span>
         </div>
-        <p style="font-size:12px;color:var(--txt-3);line-height:1.6;margin-top:12px" data-i18n="h_proto_n">Kunci lain otomatis dibuatkan kartu baru. Perintah keluar: up, down, left, right, stop, horn, a, b, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto.</p>
+        <p style="font-size:12px;color:var(--txt-3);line-height:1.6;margin-top:12px" data-i18n="h_proto_n">Kunci lain otomatis dibuatkan kartu baru. Perintah keluar: up, down, left, right, stop, horn, a, b, capit, lepas, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto.</p>
       </div>
     </div>
   </div>
@@ -3505,7 +3562,7 @@ const I18N = {
     h_eyebrow:"Panduan", h_title:"Cara Memakai", h_desc:"Lima langkah singkat dari papan mati sampai robot bergerak.",
     h_steps:"Langkah-langkah", h_tips:"Tips", h_proto:"Protokol UART",
     h_proto_p:"Papan mengirim data dengan format <b>kunci:nilai</b> per baris. Contoh yang dikenali:",
-    h_proto_n:"Kunci lain otomatis dibuatkan kartu baru. Perintah keluar: up, down, left, right, stop, horn, a, b, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto.",
+    h_proto_n:"Kunci lain otomatis dibuatkan kartu baru. Perintah keluar: up, down, left, right, stop, horn, a, b, capit, lepas, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto.",
     d_eyebrow:"Tentang", d_role:"Developer & UI Designer",
     d_desc:"ICONNECT dirancang dan dikembangkan sebagai antarmuka Web Bluetooth untuk BBC micro:bit.",
     d_bio:"Membangun ICONNECT dari nol — antarmuka bersih, dua tema, dan koneksi Bluetooth Low Energy langsung dari browser tanpa instalasi.",
@@ -3554,7 +3611,7 @@ const I18N = {
     h_eyebrow:"Guide", h_title:"How to use", h_desc:"Five short steps from a blank board to a moving robot.",
     h_steps:"Steps", h_tips:"Tips", h_proto:"UART protocol",
     h_proto_p:"The board streams data as <b>key:value</b> per line. Recognised examples:",
-    h_proto_n:"Unknown keys create their own card automatically. Outgoing commands: up, down, left, right, stop, horn, a, b, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto.",
+    h_proto_n:"Unknown keys create their own card automatically. Outgoing commands: up, down, left, right, stop, horn, a, b, capit, lepas, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto.",
     d_eyebrow:"About", d_role:"Developer & UI Designer",
     d_desc:"ICONNECT was designed and built as a Web Bluetooth interface for the BBC micro:bit.",
     d_bio:"Built ICONNECT from scratch — a clean interface, two themes, and Bluetooth Low Energy straight from the browser with zero installs.",
@@ -3684,7 +3741,7 @@ I18N.ja = {
   h_eyebrow:"ガイド", h_title:"使い方", h_desc:"ボードの電源投入からロボットが動くまで、5 つの手順。",
   h_steps:"手順", h_tips:"ヒント", h_proto:"UART プロトコル",
   h_proto_p:"ボードは 1 行ごとに <b>キー:値</b> の形式でデータを送信します。認識される例:",
-  h_proto_n:"未知のキーは自動的に新しいカードになります。送信コマンド: up, down, left, right, stop, horn, a, b, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto。",
+  h_proto_n:"未知のキーは自動的に新しいカードになります。送信コマンド: up, down, left, right, stop, horn, a, b, capit, lepas, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto。",
   d_eyebrow:"概要", d_role:"開発者 & UI デザイナー",
   d_desc:"ICONNECT は BBC micro:bit のための Web Bluetooth インターフェースとして設計・開発されました。",
   d_bio:"ICONNECT をゼロから構築 — 洗練されたインターフェース、2 つのテーマ、そしてインストール不要でブラウザーから直接つながる Bluetooth Low Energy。",
@@ -3770,7 +3827,7 @@ I18N.zh = {
   h_eyebrow:"指南", h_title:"使用方法", h_desc:"从开发板通电到机器人跑起来，只要五步。",
   h_steps:"步骤", h_tips:"小贴士", h_proto:"UART 协议",
   h_proto_p:"开发板按行发送 <b>键:值</b> 格式的数据。可识别的示例：",
-  h_proto_n:"其他键会自动生成新卡片。发出的指令：up, down, left, right, stop, horn, a, b, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto。",
+  h_proto_n:"其他键会自动生成新卡片。发出的指令：up, down, left, right, stop, horn, a, b, capit, lepas, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto。",
   d_eyebrow:"关于", d_role:"开发者 & UI 设计师",
   d_desc:"ICONNECT 是为 BBC micro:bit 设计并开发的 Web Bluetooth 界面。",
   d_bio:"从零打造 ICONNECT —— 简洁的界面、两套主题，以及无需安装、直接在浏览器中运行的 Bluetooth Low Energy 连接。",
@@ -3856,7 +3913,7 @@ I18N.es = {
   h_eyebrow:"Guía", h_title:"Cómo usarlo", h_desc:"Cinco pasos breves desde una placa apagada hasta un robot en marcha.",
   h_steps:"Pasos", h_tips:"Consejos", h_proto:"Protocolo UART",
   h_proto_p:"La placa envía datos con el formato <b>clave:valor</b> por línea. Ejemplos reconocidos:",
-  h_proto_n:"Las claves desconocidas crean su propia tarjeta automáticamente. Comandos salientes: up, down, left, right, stop, horn, a, b, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto.",
+  h_proto_n:"Las claves desconocidas crean su propia tarjeta automáticamente. Comandos salientes: up, down, left, right, stop, horn, a, b, capit, lepas, c&lt;0-180&gt;, x&lt;0-180&gt;, lamp:on/off/&lt;0-100&gt;, fan:on/off/&lt;0-3&gt;, mode:manual/auto.",
   d_eyebrow:"Acerca de", d_role:"Desarrollador y diseñador de UI",
   d_desc:"ICONNECT fue diseñado y construido como una interfaz Web Bluetooth para la BBC micro:bit.",
   d_bio:"Construyó ICONNECT desde cero: una interfaz limpia, dos temas y Bluetooth Low Energy directamente desde el navegador, sin instalar nada.",
@@ -4980,6 +5037,41 @@ $$(".ab[data-act]").forEach(el => el.onclick = () => {
   $("#lastCmd").textContent = act.toUpperCase();
   if (act === "a" || act === "b") flashBoardBtn(act);
 });
+
+/* ============================================================
+   CLAW / GRIPPER (capit) — fitur dari uconnect.html
+   UART TX: "capit" / "lepas" (servo capit — lihat contoh kode)
+   ============================================================ */
+const CLAW = (()=>{
+  const viz = $("#gripViz"), hud = $("#hudGrip");
+  let held = false;
+  function render(){
+    if (viz){
+      viz.style.setProperty("--d", (held ? 0 : -9) + "px");
+      viz.classList.toggle("held", held);
+    }
+    if (hud){ hud.textContent = held ? "CLOSED" : "OPEN"; hud.style.color = held ? "var(--ok)" : ""; }
+  }
+  function flash(btn){
+    if (!btn) return;
+    btn.classList.add("active");
+    setTimeout(() => btn.classList.remove("active"), 200);
+  }
+  function grab(){
+    held = true; render(); flash($("#gripGrab"));
+    send("capit");
+    $("#lastCmd").textContent = "CAPIT";
+  }
+  function release(){
+    held = false; render(); flash($("#gripRelease"));
+    send("lepas");
+    $("#lastCmd").textContent = "LEPAS";
+  }
+  const bG = $("#gripGrab"), bR = $("#gripRelease");
+  if (bG) bG.addEventListener("click", () => { grab(); bG.blur(); });
+  if (bR) bR.addEventListener("click", () => { release(); bR.blur(); });
+  return { grab, release, held:()=>held };
+})();
 /* Sliders fire on every pixel of the drag. Stream the intermediate values
    quietly (so the log/toasts stay readable) and announce only the value the
    user settles on. */
@@ -5000,6 +5092,12 @@ const KEYS = {ArrowUp:"up", ArrowDown:"down", ArrowLeft:"left", ArrowRight:"righ
 addEventListener("keydown", e => {
   if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA") return;
   if (e.key === " " || e.key === "Escape"){ releaseAll(); return; }   // panic stop
+  /* shortcut capit: Q = capit, E = lepas (fitur uconnect) */
+  if (!e.repeat && !e.ctrlKey && !e.metaKey && !e.altKey){
+    const k1 = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (k1 === "q"){ e.preventDefault(); CLAW.grab(); return; }
+    if (k1 === "e"){ e.preventDefault(); CLAW.release(); return; }
+  }
   const act = KEYS[e.key] || KEYS[e.key.toLowerCase()];
   if (!act || e.repeat) return;
   e.preventDefault();
@@ -5109,7 +5207,7 @@ function applyOutFromBoard(key, val){
 paintOut();
 
 /* quick commands */
-const QUICK = ["up","down","left","right","stop","horn","a","b","lamp:on","fan:2","mode:auto","led:0"];
+const QUICK = ["up","down","left","right","stop","horn","a","b","capit","lepas","lamp:on","fan:2","mode:auto","led:0"];
 $("#quickCmds").innerHTML = QUICK.map(c=>'<button class="pill" data-cmd="'+c+'" style="cursor:pointer">'+c+"</button>").join("");
 $("#quickCmds").onclick = e => { const b = e.target.closest("[data-cmd]"); if (b) send(b.dataset.cmd); };
 $("#cmdSend").onclick = () => { const v = $("#cmdIn").value.trim(); if (v){ send(v); $("#cmdIn").value = ""; } };
@@ -7252,7 +7350,8 @@ function addI18n(){
     ai_log_demo_off:"Demo Mode dimatikan.", ai_log_demo_send:"(visualizer saja — tidak dikirim)",
     ai_log_welcome:"ICONNECT AI — Camera → AI Model → Command → Bluetooth → Micro:Bit → Robot",
     ai_log_model:"Model dimuat", ai_log_model_ok:"Model AI siap digunakan!", ai_log_ble_up:"Bluetooth terhubung — UART siap",
-    chart_suhu:"Suhu — Grafik Live", chart_kelembaban:"Kelembaban — Grafik Live", ai_pause:"Jeda", ai_resume:"Lanjut", ai_switch_cam:"Ganti Kamera", ai_detected:"Terdeteksi", ai_set_facing:"Kamera default", cam_back:"Belakang", cam_front:"Depan", ai_set_flip:"Flip kamera (mirror)", ai_set_autostop:"Kirim stop otomatis saat di bawah ambang"
+    chart_suhu:"Suhu — Grafik Live", chart_kelembaban:"Kelembaban — Grafik Live", ai_pause:"Jeda", ai_resume:"Lanjut", ai_switch_cam:"Ganti Kamera", ai_detected:"Terdeteksi", ai_set_facing:"Kamera default", cam_back:"Belakang", cam_front:"Depan", ai_set_flip:"Flip kamera (mirror)", ai_set_autostop:"Kirim stop otomatis saat di bawah ambang",
+    claw_t:"Capit (Gripper)", claw_note:"Mengirim perintah <code>capit</code> / <code>lepas</code> untuk servo capit (default pin <b>P1</b>, sudut CAPIT_ANGLE 30° / LEPAS_ANGLE 110° — lihat contoh kode). Keyboard: <b>Q</b> = capit, <b>E</b> = lepas."
   },
   en:{
     m4_t:"AI Teachable Micro:Bit", m4_p:"Camera + Teachable Machine AI recognizes objects/gestures, then sends commands to your robot over Bluetooth UART in real time.", m4_tag:"● AI Vision + BLE",
@@ -7300,7 +7399,8 @@ function addI18n(){
     ai_log_demo_off:"Demo Mode off.", ai_log_demo_send:"(visualizer only — not sent)",
     ai_log_welcome:"ICONNECT AI — Camera → AI Model → Command → Bluetooth → Micro:Bit → Robot",
     ai_log_model:"Model loaded", ai_log_model_ok:"AI model is ready!", ai_log_ble_up:"Bluetooth connected — UART ready",
-    chart_suhu:"Temperature — Live Chart", chart_kelembaban:"Humidity — Live Chart", ai_pause:"Pause", ai_resume:"Resume", ai_switch_cam:"Switch Camera", ai_detected:"Detected", ai_set_facing:"Default camera", cam_back:"Rear", cam_front:"Front", ai_set_flip:"Flip camera (mirror)", ai_set_autostop:"Auto-send stop below threshold"
+    chart_suhu:"Temperature — Live Chart", chart_kelembaban:"Humidity — Live Chart", ai_pause:"Pause", ai_resume:"Resume", ai_switch_cam:"Switch Camera", ai_detected:"Detected", ai_set_facing:"Default camera", cam_back:"Rear", cam_front:"Front", ai_set_flip:"Flip camera (mirror)", ai_set_autostop:"Auto-send stop below threshold",
+    claw_t:"Claw (Gripper)", claw_note:"Sends <code>capit</code> / <code>lepas</code> commands to the gripper servo (default pin <b>P1</b>, angles CAPIT_ANGLE 30° / LEPAS_ANGLE 110° — see the code sample). Keyboard: <b>Q</b> = capit, <b>E</b> = lepas."
   },
   ja:{
     m4_t:"AI Teachable Micro:Bit", m4_p:"カメラ + Teachable Machine の AI モデルがオブジェクト/ジェスチャーを認識し、Bluetooth UART 経由でロボットへリアルタイムにコマンドを送ります。", m4_tag:"● AI ビジョン + BLE",
@@ -7348,7 +7448,8 @@ function addI18n(){
     ai_log_demo_off:"デモモード終了。", ai_log_demo_send:"（ビジュアライザーのみ — 未送信）",
     ai_log_welcome:"ICONNECT AI — Camera → AI Model → Command → Bluetooth → Micro:Bit → Robot",
     ai_log_model:"モデル読み込み完了", ai_log_model_ok:"AI モデルの準備ができました！", ai_log_ble_up:"Bluetooth 接続 — UART 利用可能",
-    chart_suhu:"温度 — ライブグラフ", chart_kelembaban:"湿度 — ライブグラフ", ai_pause:"一時停止", ai_resume:"再開", ai_switch_cam:"カメラ切替", ai_detected:"検出", ai_set_facing:"デフォルトカメラ", cam_back:"背面", cam_front:"前面", ai_set_flip:"カメラ反転 (ミラー)", ai_set_autostop:"しきい値を下回ったら自動で停止送信"
+    chart_suhu:"温度 — ライブグラフ", chart_kelembaban:"湿度 — ライブグラフ", ai_pause:"一時停止", ai_resume:"再開", ai_switch_cam:"カメラ切替", ai_detected:"検出", ai_set_facing:"デフォルトカメラ", cam_back:"背面", cam_front:"前面", ai_set_flip:"カメラ反転 (ミラー)", ai_set_autostop:"しきい値を下回ったら自動で停止送信",
+    claw_t:"クロー (グリッパー)", claw_note:"グリッパーサーボに <code>capit</code> / <code>lepas</code> コマンドを送信 (デフォルト pin <b>P1</b>、角度 CAPIT_ANGLE 30° / LEPAS_ANGLE 110° — コード例を参照)。キーボード: <b>Q</b> = capit、<b>E</b> = lepas。"
   },
   zh:{
     m4_t:"AI Teachable Micro:Bit", m4_p:"摄像头 + Teachable Machine AI 模型识别物体/手势，并通过蓝牙 UART 实时向机器人发送指令。", m4_tag:"● AI 视觉 + BLE",
@@ -7396,7 +7497,8 @@ function addI18n(){
     ai_log_demo_off:"演示模式已关闭。", ai_log_demo_send:"（仅可视化 — 未发送）",
     ai_log_welcome:"ICONNECT AI — Camera → AI Model → Command → Bluetooth → Micro:Bit → Robot",
     ai_log_model:"模型已加载", ai_log_model_ok:"AI 模型已就绪！", ai_log_ble_up:"蓝牙已连接 — UART 就绪",
-    chart_suhu:"温度 — 实时图表", chart_kelembaban:"湿度 — 实时图表", ai_pause:"暂停", ai_resume:"继续", ai_switch_cam:"切换摄像头", ai_detected:"检测到", ai_set_facing:"默认摄像头", cam_back:"后置", cam_front:"前置", ai_set_flip:"翻转摄像头 (镜像)", ai_set_autostop:"低于阈值时自动发送停止"
+    chart_suhu:"温度 — 实时图表", chart_kelembaban:"湿度 — 实时图表", ai_pause:"暂停", ai_resume:"继续", ai_switch_cam:"切换摄像头", ai_detected:"检测到", ai_set_facing:"默认摄像头", cam_back:"后置", cam_front:"前置", ai_set_flip:"翻转摄像头 (镜像)", ai_set_autostop:"低于阈值时自动发送停止",
+    claw_t:"机械爪 (夹爪)", claw_note:"向夹爪舵机发送 <code>capit</code> / <code>lepas</code> 命令 (默认引脚 <b>P1</b>，角度 CAPIT_ANGLE 30° / LEPAS_ANGLE 110° — 见代码示例)。键盘: <b>Q</b> = capit，<b>E</b> = lepas。"
   },
   es:{
     m4_t:"AI Teachable Micro:Bit", m4_p:"La cámara + un modelo de IA de Teachable Machine reconocen objetos/gestos y envían comandos al robot por Bluetooth UART en tiempo real.", m4_tag:"● Visión IA + BLE",
@@ -7444,7 +7546,8 @@ function addI18n(){
     ai_log_demo_off:"Modo demo desactivado.", ai_log_demo_send:"(solo visualizador — no enviado)",
     ai_log_welcome:"ICONNECT AI — Camera → AI Model → Command → Bluetooth → Micro:Bit → Robot",
     ai_log_model:"Modelo cargado", ai_log_model_ok:"¡El modelo de IA está listo!", ai_log_ble_up:"Bluetooth conectado — UART listo",
-    chart_suhu:"Temperatura — Gráfico en vivo", chart_kelembaban:"Humedad — Gráfico en vivo", ai_pause:"Pausar", ai_resume:"Reanudar", ai_switch_cam:"Cambiar cámara", ai_detected:"Detectado", ai_set_facing:"Cámara predeterminada", cam_back:"Trasera", cam_front:"Frontal", ai_set_flip:"Voltear cámara (espejo)", ai_set_autostop:"Enviar stop automático bajo el umbral"
+    chart_suhu:"Temperatura — Gráfico en vivo", chart_kelembaban:"Humedad — Gráfico en vivo", ai_pause:"Pausar", ai_resume:"Reanudar", ai_switch_cam:"Cambiar cámara", ai_detected:"Detectado", ai_set_facing:"Cámara predeterminada", cam_back:"Trasera", cam_front:"Frontal", ai_set_flip:"Voltear cámara (espejo)", ai_set_autostop:"Enviar stop automático bajo el umbral",
+    claw_t:"Garra (Pinza)", claw_note:"Envía los comandos <code>capit</code> / <code>lepas</code> al servo de la garra (pin <b>P1</b> por defecto, ángulos CAPIT_ANGLE 30° / LEPAS_ANGLE 110° — ver el ejemplo de código). Teclado: <b>Q</b> = capit, <b>E</b> = lepas."
   }
   };
   for (const l in ADD){
@@ -7471,5 +7574,5 @@ return { Store, Camera, TM, BLE, Commands, Viz, Demo, Mon };
 })();
 </script>
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a307af55fa0caa34',t:'MTc4NzYzMDM3NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3b3d10078e5aa34',t:'MTc4OTQzNTMwNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4bc70e2c01a94c73b74392e4234840661791215815920" integrity="sha512-L0ha0OXavK/8okipN9F8BtP84dg9DUhPERbBXzwI6dgTA55d2+yweo3pn5CSFYs45/r8md2+xvUPtTdvTNRfjA==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","spa":2}' crossorigin="anonymous"></script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4717cb87ffa244a',t:'MTc5MTQyNDE0Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4717cb87ffa244a',t:'MTc5MTQyNDE0Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a50fe326cd39d8ca',t:'MTc5MzA4NTA5Mg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
